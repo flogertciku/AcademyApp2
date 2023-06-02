@@ -1,29 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import {useParams,Link} from "react-router-dom";
+import {useParams,Link,useNavigate} from "react-router-dom";
 const ProfileDetail = (props) => {
+    const navigate=useNavigate()
     const [person, setPerson] = useState({})
     const {id} = useParams(); 
     const [update,setUpdate]=useState(true)
     useEffect(() => {
-        axios.get("http://localhost:8000/api/profiles/" + id)
+        axios.get("http://localhost:8000/api/profiles/" + id,{withCredentials: true})
             .then( res => {
                 console.log(res.data);
                 setPerson(res.data);
-            })
-            .catch( err => console.log(err) );
+            },{withCredentials: true})
+            .catch( err => err.response.status === 401 ? navigate("/auth") : console.log(err) );
     }, [update]);
     const onCheckBelt = (e)=>{
       console.log(e.target.value)
         axios.patch('http://localhost:8000/api/profiles/' + id, {
             betaPlanBelt: e.target.checked,   
-        }).then(person => setUpdate(!update))
+        },{withCredentials: true}).then(person => setUpdate(!update))
     }
     const onCheck = (e)=>{
       console.log("onCheck")
         axios.patch('http://localhost:8000/api/profiles/' + id, {
             cDegree: e.target.checked,   
-        }).then(person => setUpdate(!update))
+        },{withCredentials: true}).then(person => setUpdate(!update))
     }
 
     return (

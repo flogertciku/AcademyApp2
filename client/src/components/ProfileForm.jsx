@@ -19,6 +19,7 @@ const ProfileForm = () => {
     const onSubmitHandler = (e) => {
         //prevent default behavior of the submit
         e.preventDefault();
+       
         //make a post request to create a new person
         axios.post('http://localhost:8000/api/profiles', {
             name,    
@@ -27,13 +28,13 @@ const ProfileForm = () => {
             role,
             betaPlanBelt,
             cDegree    // this is shortcut syntax for lastName: lastName
-        })
+        },{withCredentials: true})
             .then(res=>{
                 console.log(res); // always console log to get used to tracking your data!
                 console.log(res.data);
 navigate("/profile")
             })
-            .catch(err=>setValidation(err.response.data.errors))
+            .catch(err=>err.response.status === 401 ? navigate("/auth") : setValidation(err.response.data.errors))
     }
     
     return (

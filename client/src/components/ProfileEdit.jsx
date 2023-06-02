@@ -15,7 +15,7 @@ const ProfileEdit = (props) => {
     const [cDegree, setcDegree] = useState(false);
     const [validation,setValidation]=useState({})
     useEffect(() => {
-        axios.get("http://localhost:8000/api/profiles/" + id)
+        axios.get("http://localhost:8000/api/profiles/" + id,{withCredentials: true})
             .then( res => {
                 console.log(res.data);
                 setEmail(res.data.email);
@@ -48,8 +48,8 @@ const ProfileEdit = (props) => {
             role,
             betaPlanBelt,
             cDegree  
-          }).then(profile=>navigate("/Profile"))
-          .catch(err=>{ setValidation(err.response.data.errors ) })
+          },{withCredentials: true}).then(profile=>navigate("/Profile"))
+          .catch(err=>{err.response.status === 401 ? navigate("/auth") : setValidation(err.response.data.errors ) })
       }
 
     return (
