@@ -11,7 +11,7 @@ module.exports = {
                     id: user._id
                 }, process.env.SECRET_KEY);
 
-                return res.cookie("usertokenRegister", userToken, {
+                return res.cookie("usertoken", userToken, {
                         httpOnly: true
                     }).json({ msg: "success!", user: user });
             })
