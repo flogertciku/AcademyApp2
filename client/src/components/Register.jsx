@@ -15,13 +15,13 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8000/api/register', {
+      const response = await axios.post('http://localhost:8000/api/register',  {
         firstName,
         lastName,
         email,
         password,
         confirmPassword
-      });
+      },{ withCredentials: true });
 
       if (response.status === 200) {
         
